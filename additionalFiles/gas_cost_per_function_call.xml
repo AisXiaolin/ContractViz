@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tmfxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="xmlDefinition.xsd">
+
+    <!-- State Provider to track gas cost over time -->
+    <stateProvider id="ethereum.gas.fee.per.function" version="1">
+        <head>
+            <traceType id="org.eclipse.tracecompass.incubator.traceevent.core.trace" />
+            <label value="Ethereum Gas Fee Per Function" />
+        </head>
+
+        <!-- Event Handler to update cost per TID -->
+        <eventHandler eventName="*">
+            <stateChange>
+                <if>
+                    <condition operator="ne">
+                        <field name="args/gasUsed" />
+                        <stateValue type="null" />
+                    </condition>
+                </if>
+                <then>
+                    <!-- Use TID as key and track cost per TID -->
+                    <stateAttribute type="constant" value="Functions" />
+                    <stateAttribute type="eventField" value="name" />
+                    <stateAttribute type="constant" value="gas" />
+                    <stateValue type="script" value="parseInt(gas, 16)">
+					    <stateValue id="gas" type="eventField" value="args/gasUsed" />
+				    </stateValue>
+                </then>
+            </stateChange>
+        </eventHandler>
+    </stateProvider>
+
+    <!-- XY View to display gas cost variation over time per TID -->
+    <xyView id="ethereum.gas.fee.per.function.xy.chart.view">
+        <head>
+            <analysis id="ethereum.gas.fee.per.function" />
+            <label value="Ethereum Fee Per Function" />
+        </head>
+
+        <entry path="Functions/*">
+            <display type="constant" value="gas" />
+            <name type="self" />
+        </entry>
+    </xyView>
+</tmfxml>
