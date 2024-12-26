@@ -1,51 +1,44 @@
-# Eclipse Trace Compass
+# Building the application
 
-<img align="right" src="doc/images/tc-logo.png">
+## ContractViz is extending the Eclipse Trace Compass so that the added features based on the functionalities of the existing tool have been tailored to smart contract analysis.
+## Step 1: Get Eclipse Trace Compass Running Up 
+### Compiling manually
 
-`Eclipse Trace Compass™` is an open source application to solve performance and
-reliability issues by reading and analyzing logs or traces of a system. Its goal
-is to provide views, graphs, metrics, and more to help extract useful
-information from traces, in a way that is more user-friendly and informative
-than huge text dumps.
+The Maven project build requires version 3.9 or later. It can be downloaded from
+<https://maven.apache.org> or from the package management system of your distro.
 
-`Eclipse Trace Compass` is also a framework to build such trace analysis and
-visualization tools. It provides Eclipse extension points, declarative XML and
-scripting capabilities to extend the core Trace Compass functionality for 
-domain-specific trace formats and use cases.
+It also requires Java version 11 or later.
 
-For more information about the key features, see [Trace Compass website](https://eclipse.dev/tracecompass/).
+To build the project manually using Maven, simply run the following command from
+the top-level directory, to skip them you can append `-Dmaven.test.skip=true` to the
+`mvn` command:
 
-Also, check-out the [user guides and developer guides](https://github.com/eclipse-tracecompass/org.eclipse.tracecompass/wiki#user-guides).
+```
+mvn clean install -Dmaven.test.skip=true
+```
+try this command if the test-skipping process is not successful in the previous step:
 
-<img src="doc/images/tc-screenshot.png" width="66%">
+```
+mvn clean install -Dmaven.test.skip=true -DskipTests
+```
 
-## Releases
+Stand-alone application (RCP) packages will be placed in
+`rcp/org.eclipse.tracecompass.rcp.product/target/products`.
 
-Information about releases can be found on the [Trace Compass project](https://projects.eclipse.org/projects/tools.tracecompass) page at Eclipse.org.
+### Once the Eclipse Trace Compass has been compiled, navigate to this place
+### (the following example is in a MacOS system)
+`org.eclipse.tracecompass/rcp/org.eclipse.tracecompass.rcp.product/target/products/org.eclipse.tracecompass.rcp/macosx/cocoa/aarch64/trace-compass.app/Contents/MacOS`.
+### then run this command to get the software running 
+```
+./tracecompass
+```
 
-See [New & Noteworthy](https://github.com/eclipse-tracecompass/org.eclipse.tracecompass/wiki/New_In_Trace_Compass)
-for release details.
+## Step 2: Loading processed data file to the software from 'additionalFiles' folder
+### Load in trace files 
+Under 'Project Explorer', right-click 'Trace folder' on the software interface's left panel and load in 'traceOnlyFlippedts.json'
 
-## Downloads
+Make sure this add-on has been installed: "Trace Compass TraceEvent Parser (incubator)"
 
-`Eclipse Trace Compass` is available as plug-ins that can be installed to an
-Eclipse IDE, as well as standalone application.
-
-Check [Downloads](https://projects.eclipse.org/projects/tools.tracecompass/downloads) for downloading specific versions of Trace Compass.
-
-## Contributing to Trace Compass
-
-**👋 Want to help?** Read our [contributor guide](CONTRIBUTING.md) and follow the
-instructions to contribute code.
-
-You will also find there information about the `setup of the development environment`,
-`build instructions`, the `development and review process` as well as the `API policy`.
-
-## Reporting issues
-
-Read our [contributor guide](CONTRIBUTING.md#when-to-submit-patches) to get details on
-how to report issues.
-
-## Help and support
-
-See [contact](CONTRIBUTING.md#contact) section of the contributor guide on how to get help and support. 
+### Add in the XY Chart Analysis
+Right-click on the 'Trace folder,' and select 'Manage XML analyses...', import 'gas_cost_per_function_call.xml' and apply this file. 
+Then the Ethereum Gas Fee Per Function analysis will be generated, and the XY chart will be shown as the 'Ethereum Fee Per Function'.
